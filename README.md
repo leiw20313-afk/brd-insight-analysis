@@ -31,3 +31,5 @@ BRD 场景洞察技能介绍
 
 改写检查
 检测结果为中度，原稿主要有章节偏多、内容重复和总结过密的问题。改写后收拢了结构，保留了两阶段流程、使用方式和限制，没有增加新的能力描述。
+
+安装命令： $skill-installer https://github.com/leiw20313-afk/brd-insight-analysis/tree/main/brd-insight-analysis
