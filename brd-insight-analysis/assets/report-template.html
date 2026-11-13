@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>%%REPORT_TITLE%%</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172b3a;
+      --body: #293d4c;
+      --muted: #586d7d;
+      --line: #d6e0e6;
+      --paper: #ffffff;
+      --canvas: #eef3f5;
+      --navy: #123044;
+      --teal: #087e78;
+      --teal-dark: #075d59;
+      --teal-soft: #e5f4f1;
+      --amber: #7a4b09;
+      --amber-soft: #fff4dd;
+      --red: #8e3434;
+      --red-soft: #fff0ed;
+      --blue-soft: #edf4f8;
+      --focus: #b45b00;
+      --radius: 12px;
+      font-family: "Aptos", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 18px; }
+    body { margin: 0; background: var(--canvas); color: var(--body); font-size: 16px; line-height: 1.72; }
+    a { color: #075d68; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { color: #06474f; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    ::selection { color: #102b38; background: #b9e5de; }
+    .skip-link { position: absolute; z-index: 20; top: 8px; left: 8px; transform: translateY(-150%); padding: 8px 12px; border-radius: 6px; background: #fff; color: var(--navy); font-weight: 700; }
+    .skip-link:focus { transform: translateY(0); }
+    .page { max-width: 1280px; margin: 0 auto; padding: 28px 28px 48px; }
+    .hero { padding: 30px 36px 27px; border-bottom: 4px solid #2b9b91; border-radius: 14px 14px 0 0; background: var(--navy); color: #fff; }
+    h1 { max-width: 900px; margin: 0; color: #fff; font-size: clamp(28px, 3.6vw, 42px); font-weight: 760; line-height: 1.2; letter-spacing: -.025em; text-wrap: balance; }
+    .subtitle { max-width: 76ch; margin: 12px 0 0; color: #e0edf1; font-size: 17px; line-height: 1.6; }
+    .metadata { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 21px 0 0; padding-top: 15px; border-top: 1px solid #426071; }
+    .meta-item { display: flex; gap: 8px; align-items: baseline; min-width: 140px; }
+    .meta-item dt { color: #d1e0e5; font-size: 12px; }
+    .meta-item dd { margin: 0; color: #fff; font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; }
+    .reading-toolbar { position: sticky; z-index: 9; top: 0; display: grid; grid-template-columns: minmax(220px, 1.4fr) minmax(150px, .8fr) minmax(150px, .8fr) auto; gap: 9px; align-items: end; padding: 12px 16px; border-bottom: 1px solid var(--line); background: #fff; }
+    .js-only { display: none; }
+    .has-js .js-only { display: grid; }
+    .toolbar-field { display: grid; gap: 3px; color: #344d5d; font-size: 12px; font-weight: 700; }
+    .toolbar-field input, .toolbar-field select { width: 100%; min-height: 40px; padding: 7px 10px; border: 1px solid #aebec8; border-radius: 7px; background: #fff; color: #203846; font: inherit; font-size: 14px; }
+    .toolbar-actions { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+    button { min-height: 40px; padding: 7px 11px; border: 1px solid #9aadb9; border-radius: 7px; background: #fff; color: #16394a; font: inherit; font-size: 13px; font-weight: 680; cursor: pointer; }
+    button:hover { background: var(--blue-soft); border-color: #647f90; }
+    .button-primary { border-color: var(--teal-dark); background: var(--teal-dark); color: #fff; }
+    .button-primary:hover { border-color: #064944; background: #064944; color: #fff; }
+    .toolbar-status { grid-column: 1 / -1; min-height: 1.25em; margin: 0; color: #455e6e; font-size: 12px; }
+    .layout { display: grid; grid-template-columns: 218px minmax(0, 1fr); gap: 20px; align-items: start; }
+    .toc { position: sticky; top: 116px; max-height: calc(100vh - 136px); overflow: auto; padding: 14px 11px; border: 1px solid var(--line); border-top: 0; background: #fff; }
+    .toc-title { margin: 0 8px 8px; color: #425b6b; font-size: 11px; font-weight: 800; letter-spacing: .07em; }
+    .toc a { display: block; padding: 7px 8px; border-radius: 6px; color: #344e5e; font-size: 13px; line-height: 1.4; text-decoration: none; }
+    .toc a:hover, .toc a[aria-current="location"] { background: var(--teal-soft); color: #064f4b; }
+    .toc a[aria-current="location"] { font-weight: 750; }
+    main { min-width: 0; padding: 4px 0 0; }
+    .report-section { min-width: 0; margin: 0 0 14px; padding: 24px 28px; border: 1px solid var(--line); border-radius: 0; background: var(--paper); scroll-margin-top: 96px; }
+    .section-heading { display: flex; align-items: baseline; gap: 12px; margin: 0 0 15px; padding-bottom: 10px; border-bottom: 1px solid #dce5ea; }
+    .section-heading h2 { margin: 0; color: var(--navy); font-size: 23px; line-height: 1.32; letter-spacing: -.018em; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+    h3 { margin: 20px 0 7px; color: #1d3c4e; font-size: 18px; line-height: 1.4; }
+    h4 { margin: 17px 0 5px; color: #29495b; font-size: 15px; }
+    p { max-width: 76ch; margin: 8px 0 12px; }
+    ul, ol { margin: 8px 0 14px; padding-left: 1.35em; }
+    li { margin: 4px 0; padding-left: 2px; }
+    .summary-lead { max-width: 75ch; margin: 3px 0 16px; color: #15394a; font-size: 18px; font-weight: 650; line-height: 1.58; }
+    .finding { margin: 12px 0; padding: 13px 16px; border: 1px solid #c8d9df; border-radius: 8px; background: #f3f8fa; }
+    .finding-title { margin: 0 0 5px; color: #173c4e; font-size: 15px; font-weight: 750; }
+    .finding p:last-child { margin-bottom: 0; }
+    .status-fact, .status-analysis, .status-hypothesis, .priority-key, .priority-important, .priority-general { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 750; line-height: 1.6; white-space: nowrap; }
+    .status-fact { background: #e7f3ed; color: #17543a; }
+    .status-analysis { background: #eaf2f8; color: #204d67; }
+    .status-hypothesis { background: var(--amber-soft); color: #684006; }
+    .priority-key { background: #fce8e4; color: #762d2d; }
+    .priority-important { background: #fff1d4; color: #6a4306; }
+    .priority-general { background: #edf2f5; color: #405867; }
+    .question-must { border-color: #cf8b79; background: #fff6f3; }
+    .question-recommend { border-color: #ddc58f; background: #fffaf0; }
+    .scenario-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 12px 0; }
+    .scenario-cell { min-width: 0; padding: 12px 0; border-bottom: 1px solid #e1e8ec; }
+    .scenario-cell dt { margin: 0 0 4px; color: #526b7a; font-size: 12px; font-weight: 750; }
+    .scenario-cell dd { margin: 0; color: #233c4b; overflow-wrap: anywhere; }
+    .story-intro { max-width: 78ch; margin: 12px 0 16px; padding: 13px 16px; border-radius: 8px; background: #edf6f4; color: #1e3b45; font-size: 16px; font-weight: 570; }
+    .story-steps { display: grid; gap: 0; margin: 14px 0; }
+    .story-step { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid #e1e8ec; }
+    .story-step-index { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--teal-soft); color: #115c56; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .story-step h3 { margin: 0 0 3px; font-size: 15px; }
+    .story-step p { margin: 3px 0; }
+    .story-caveat, .supplement { margin: 12px 0; padding: 12px 15px; border: 1px dashed #a9bbc5; border-radius: 7px; background: #f7fafb; color: #405866; font-size: 14px; }
+    .story-caveat strong, .supplement strong { color: #294654; }
+    .persona-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; }
+    .persona-card { min-width: 0; padding: 14px 0; border-bottom: 1px solid #dce5ea; background: transparent; }
+    .persona-card h3 { margin: 0 0 5px; color: var(--navy); font-size: 16px; }
+    .persona-card ul { margin: 6px 0; }
+    .persona-meta { color: #4c6372; font-size: 12px; }
+    .insight-path { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 13px 0; }
+    .insight-node { min-width: 0; padding: 10px 11px; border-top: 2px solid #4b8e91; background: #f1f6f7; }
+    .insight-node strong { display: block; margin-bottom: 3px; color: var(--navy); font-size: 12px; }
+    .insight-node span { color: #354e5d; font-size: 13px; overflow-wrap: anywhere; }
+    .table-wrap { max-width: 100%; overflow-x: auto; margin: 12px 0 16px; border: 1px solid var(--line); background: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.55; font-variant-numeric: tabular-nums; }
+    th, td { min-width: 96px; padding: 10px 12px; border-bottom: 1px solid #e2e9ed; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    th { background: #eaf1f4; color: #203f50; font-size: 12px; font-weight: 800; }
+    tbody tr:nth-child(even) { background: #f8fafb; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tr[hidden] { display: none; }
+    blockquote { max-width: 76ch; margin: 12px 0; padding: 8px 14px; border-left: 2px solid #8299a6; background: #f4f7f8; color: #3e5664; }
+    details { margin: 12px 0; border-top: 1px solid #dce5ea; border-bottom: 1px solid #dce5ea; }
+    details summary { padding: 9px 1px; color: #20485b; font-weight: 720; cursor: pointer; }
+    details[open] summary { margin-bottom: 6px; }
+    .source { margin: 10px 0; padding: 9px 12px; background: #f1f5f7; color: #405867; font-size: 12px; overflow-wrap: anywhere; }
+    .source-label { margin-right: 6px; color: #2a4656; font-weight: 800; }
+    .muted { color: var(--muted); }
+    .filter-empty { padding: 8px 0; color: #526a78; font-size: 13px; }
+    .back-to-top { position: fixed; z-index: 10; right: 24px; bottom: 22px; display: none; border-color: #31586b; background: var(--navy); color: #fff; }
+    .back-to-top.is-visible { display: inline-flex; align-items: center; }
+    .footer { padding: 8px 5px; color: #4f6573; font-size: 12px; text-align: center; }
+    @media (max-width: 900px) {
+      .page { padding: 16px 14px 34px; }
+      .reading-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar-actions { grid-column: 1 / -1; }
+      .toolbar-status { grid-column: 1 / -1; }
+      .layout { grid-template-columns: 1fr; gap: 0; }
+      .toc { position: static; display: flex; flex-wrap: wrap; gap: 3px; max-height: none; border-top: 0; border-bottom: 1px solid var(--line); }
+      .toc-title { flex-basis: 100%; }
+      .toc a { max-width: 100%; }
+      .report-section { padding: 21px 22px; }
+    }
+    @media (max-width: 560px) {
+      body { font-size: 15px; }
+      .hero { padding: 22px 20px; }
+      .subtitle { font-size: 15px; }
+      .metadata { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 13px; }
+      .meta-item { display: block; min-width: 0; }
+      .meta-item dd { overflow-wrap: anywhere; }
+      .reading-toolbar { grid-template-columns: 1fr; gap: 8px; }
+      .toolbar-actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .toolbar-actions button { width: 100%; }
+      .report-section { padding: 18px 16px; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 4px; }
+      .scenario-grid, .persona-grid { grid-template-columns: 1fr; }
+      .insight-path { grid-template-columns: 1fr 1fr; }
+      .back-to-top { right: 12px; bottom: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    @media print {
+      @page { margin: 15mm 13mm; }
+      body { background: #fff; color: #111; font-size: 10.5pt; line-height: 1.55; }
+      .page { max-width: none; padding: 0; }
+      .skip-link, .reading-toolbar, .toc, .back-to-top { display: none !important; }
+      .hero { padding: 17px 19px; border-radius: 0; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .layout { display: block; margin-top: 10px; }
+      .report-section { margin-bottom: 8px; padding: 14px 16px; border: 0; border-top: 1px solid #bdc8ce; break-inside: auto; }
+      .finding, .scenario-cell, tr, .persona-card, .story-step, .insight-node { break-inside: avoid; }
+      .table-wrap { overflow: visible; border: 0; }
+      table { font-size: 9pt; }
+      th, td { min-width: 0; padding: 6px 7px; }
+      details:not([open]) > :not(summary) { display: block !important; }
+      details summary { list-style: none; }
+      details summary::-webkit-details-marker { display: none; }
+      a { color: inherit; }
+      .footer { padding-top: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#report-main">跳到报告正文</a>
+  <div class="page">
+    <header class="hero">
+      <h1>%%REPORT_TITLE%%</h1>
+      <p class="subtitle">%%REPORT_SUBTITLE%%</p>
+      <dl class="metadata">%%METADATA_HTML%%</dl>
+    </header>
+    <section class="reading-toolbar js-only" aria-label="报告阅读工具">
+      <label class="toolbar-field" for="report-search">搜索报告内容
+        <input id="report-search" type="search" placeholder="输入角色、场景、规则或故事关键词" autocomplete="off">
+      </label>
+      <label class="toolbar-field" for="role-filter">按角色筛选
+        <select id="role-filter"><option value="">全部角色</option></select>
+      </label>
+      <label class="toolbar-field" for="priority-filter">按功能优先级筛选
+        <select id="priority-filter"><option value="">全部优先级</option></select>
+      </label>
+      <div class="toolbar-actions" aria-label="页面操作">
+        <button type="button" data-action="expand-evidence">展开证据</button>
+        <button type="button" data-action="collapse-evidence">收起证据</button>
+        <button type="button" data-action="reset-filters">清除筛选</button>
+        <button type="button" class="button-primary" data-action="print">打印 / 保存为 PDF</button>
+      </div>
+      <p id="filter-status" class="toolbar-status" role="status" aria-live="polite"></p>
+    </section>
+    <div class="layout">
+      <nav class="toc" aria-label="报告章节导航">
+        <p class="toc-title">报告目录</p>
+        %%NAV_HTML%%
+      </nav>
+      <main id="report-main" tabindex="-1">
+        %%REPORT_BODY_HTML%%
+      </main>
+    </div>
+    <footer class="footer">%%FOOTER_HTML%%</footer>
+  </div>
+  <button type="button" class="back-to-top" data-action="top" aria-label="返回页面顶部">返回顶部</button>
+  <script>
+    (() => {
+      document.documentElement.classList.add('has-js');
+      const search = document.getElementById('report-search');
+      const roleFilter = document.getElementById('role-filter');
+      const priorityFilter = document.getElementById('priority-filter');
+      const status = document.getElementById('filter-status');
+      const items = Array.from(document.querySelectorAll('[data-report-item]'));
+      const priorities = ['关键', '重要', '一般'];
+      const addOptions = (select, values) => values.forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
+      addOptions(roleFilter, [...new Set(items.map(item => item.dataset.role).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'zh-CN')));
+      const availablePriorities = priorities.filter(value => items.some(item => item.dataset.priority === value));
+      addOptions(priorityFilter, availablePriorities);
+      roleFilter.disabled = !items.some(item => item.dataset.role);
+      priorityFilter.disabled = !items.some(item => item.dataset.priority);
+      const sections = Array.from(document.querySelectorAll('.report-section'));
+      const emptyMessages = new Map();
+      sections.forEach(section => {
+        if (!section.querySelector('[data-report-item]')) return;
+        const empty = document.createElement('p');
+        empty.className = 'filter-empty';
+        empty.hidden = true;
+        empty.textContent = '本节没有符合当前筛选条件的条目。';
+        section.appendChild(empty);
+        emptyMessages.set(section, empty);
+      });
+      const applyFilters = () => {
+        const query = (search.value || '').trim().toLocaleLowerCase('zh-CN');
+        const role = roleFilter.value;
+        const priority = priorityFilter.value;
+        let visible = 0;
+        items.forEach(item => {
+          const matches = (!query || item.textContent.toLocaleLowerCase('zh-CN').includes(query)) &&
+            (!role || item.dataset.role === role) &&
+            (!priority || item.dataset.priority === priority);
+          item.hidden = !matches;
+          if (matches) visible++;
+        });
+        emptyMessages.forEach((empty, section) => {
+          const sectionItems = Array.from(section.querySelectorAll('[data-report-item]'));
+          const hasActiveFilter = Boolean(query || role || priority);
+          empty.hidden = !hasActiveFilter || sectionItems.some(item => !item.hidden);
+        });
+        if (status) status.textContent = items.length
+          ? (query || role || priority ? `当前显示 ${visible} / ${items.length} 项。` : `共 ${items.length} 项可搜索和筛选。`)
+          : '本报告没有配置可筛选条目；可使用浏览器自带查找功能。';
+      };
+      search.addEventListener('input', applyFilters);
+      roleFilter.addEventListener('change', applyFilters);
+      priorityFilter.addEventListener('change', applyFilters);
+      document.querySelectorAll('[data-action="expand-evidence"]').forEach(button => button.addEventListener('click', () => {
+        document.querySelectorAll('details[data-evidence-details]').forEach(detail => { detail.open = true; });
+      }));
+      document.querySelectorAll('[data-action="collapse-evidence"]').forEach(button => button.addEventListener('click', () => {
+        document.querySelectorAll('details[data-evidence-details]').forEach(detail => { detail.open = false; });
+      }));
+      document.querySelectorAll('[data-action="reset-filters"]').forEach(button => button.addEventListener('click', () => {
+        search.value = ''; roleFilter.value = ''; priorityFilter.value = ''; applyFilters(); search.focus();
+      }));
+      document.querySelectorAll('[data-action="print"]').forEach(button => button.addEventListener('click', () => window.print()));
+      const backToTop = document.querySelector('[data-action="top"]');
+      const updateTopButton = () => backToTop.classList.toggle('is-visible', window.scrollY > 520);
+      window.addEventListener('scroll', updateTopButton, { passive: true });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+      const navLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+      const sectionsById = navLinks.map(link => document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter(Boolean);
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          const visibleEntries = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (!visibleEntries.length) return;
+          navLinks.forEach(link => link.removeAttribute('aria-current'));
+          const active = navLinks.find(link => decodeURIComponent(link.hash.slice(1)) === visibleEntries[0].target.id);
+          if (active) active.setAttribute('aria-current', 'location');
+        }, { rootMargin: '-15% 0px -72% 0px', threshold: 0 });
+        sectionsById.forEach(section => observer.observe(section));
+      }
+      applyFilters();
+      updateTopButton();
+    })();
+  </script>
+</body>
+</html>
