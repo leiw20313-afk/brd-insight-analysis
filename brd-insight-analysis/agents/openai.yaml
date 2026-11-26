@@ -1,0 +1,3 @@
+interface:
+  display_name: "业务需求洞察"
+  short_description: "映射目标价值与用户故事，发现遗漏场景，确认业务规则并生成 PRD 基线。"
